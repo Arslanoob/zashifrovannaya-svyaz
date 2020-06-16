@@ -27,7 +27,7 @@ def prime_nos():
 def rsa(p, q):
     n = p * q               # Calculate N
     phy = (p-1) * (q-1)     # Calculate phy(N)
-    e = 0
+    e = 2
     while ( e >= 0  &  e < phy ):
         if math.gcd(e,phy) == 1:
             pubk = e,n
@@ -35,9 +35,9 @@ def rsa(p, q):
             break
         else:
             e = e + 1 
-    d = 0
-    while ( d >= 0  &  d < phy ):
-        if (d * e % phy) == 1:
+    d = 2
+    while ( d >= 0  &  d < phy ) :
+        if (d * e % phy) == 1 & (d != e):
             privk = d,n
             print("Private Key is : ",privk)
             break
