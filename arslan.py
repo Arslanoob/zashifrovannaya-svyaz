@@ -40,8 +40,9 @@ def rsa(p, q):
     while ( d >= 0  &  d < phy ) :
         if (d * e % phy) == 1 & (d != e):
             privk = d,n
-            x_a = d 
-            send(3**d%17)
+            x_a = d
+            pub_A = 3**d%17 
+            send(str(pub_A))
             x_a = d 
             return x_a
             break 
@@ -50,20 +51,21 @@ def rsa(p, q):
 
 
 def send(cipher):
-    final = bytes(cipher, 'utf-8')
-    conn.sendall(final)
-    print('Encrypted data sent')
+    conn.sendall(bytes(cipher,'utf-8'))
+    print('data sent')
 
 def dh(x_a,pub_s,a,g):
     k = (pub_s**x_a)%g
     return k
 
 def receive_key(x_a):
-    data = conn.recv(64)
-    pub_s = int(data.decode('utf-8'))  
+    data = conn.recv(1024)  
     print("\nMessage from A : " + data.decode('utf-8'))
     dh(x_a,pub_s,3,17)
 
+def test_make(cipher)-> int:
+    return cipher
+    
 
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
@@ -76,4 +78,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print('Connected by', addr)
     pub_s = conn.recv(1024)
     print(pub_s.decode('utf-8'))
-    print(receive_key(prime_nos))
+    j = int(test_make(pub_s.decode('utf-8')))
+    print(type(j))
+    pub_s=test_make(pub_s.decode('utf-8'))
+    prime_nos()

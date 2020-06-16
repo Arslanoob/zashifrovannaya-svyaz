@@ -38,10 +38,10 @@ def rsa(p, q):
     while ( d >= 0  &  d < phy ) :
         if (d * e % phy) == 1 & (d != e):
             privk = d,n
-            x_s = d 
-            send(3**d%17)
-            x_s = d 
-            return x_s
+            global x_s
+            x_s = d
+            pub_s = (3**d)%17 
+            send(str(pub_s))
             break 
         else:
             d = d + 1
@@ -52,20 +52,26 @@ def dh(x_s,pub_A,a,g):
 
 
 def send(cipher):
-    final = bytes(cipher)
+    final = bytes(cipher,'utf-8')
     s.sendall(final)
     print(' data sent')
+    return
+
+def test_make(pub_A)-> int:
+    bc = pub_A
+    return bc
 
 
 def receive():
     data = s.recv(1024)
     print("\nMessage from A : " + data.decode('utf-8'))
+    return
 
 def receive_key():
-    data = s.recv(1024)
-    pub_A = int(data.decode('utf-8'))  
+    data = s.recv(1024)  
     print("\nMessage from A : " + data.decode('utf-8'))
-    dh(x_s,pub_A,3,17)
+    pub_A =data
+    return pub_A
 
     
 
@@ -75,6 +81,8 @@ PORT = 1337  # The port used by the server
 with sk.socket(sk.AF_INET, sk.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     prime_nos()
-    receive_key()
-    print(k)
+    pub_A = s.recv(1024)
+    print(pub_A.decode('utf-8'))
+    j = int(test_make(pub_A.decode('utf-8')))
+    print(dh(x_s,j,3,17))
 
