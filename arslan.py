@@ -85,5 +85,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print('sending the publickey(by DH) to the other end ......')
     pub_A = 3**x_a%17
     send(str(pub_A))
-    print('Symmetric key for the session obtained using DH protocol:',dh(x_a,j,3,17))
-
+    symmetric_key = dh(x_a,j,3,17)
+    print('Symmetric key for the session obtained using DH protocol:',symmetric_key)
+    while True:
+        data = conn.recv(4096)
+        if not data: break
+        from_client += data
+        print(str((from_client, "utf-8"))
+        msg = bytes("I am Arslan", "utf-8")
+        conn.send(msg)        
+    conn.close()
+    print 'client disconnected'
