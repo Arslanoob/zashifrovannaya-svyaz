@@ -31,6 +31,7 @@ def rsa(p, q):
     while ( e >= 0  &  e < phy ):
         if math.gcd(e,phy) == 1:
             pubk = e,n
+            print("RSA-Public Key is : ",pubk)
             break
         else:
             e = e + 1 
@@ -38,10 +39,9 @@ def rsa(p, q):
     while ( d >= 0  &  d < phy ) :
         if (d * e % phy) == 1 & (d != e):
             privk = d,n
+            print("RSA-Private Key is : ",privk)
             global x_s
             x_s = d
-            pub_s = (3**d)%17 
-            send(str(pub_s))
             break 
         else:
             d = d + 1
@@ -81,9 +81,12 @@ PORT = 1337  # The port used by the server
 with sk.socket(sk.AF_INET, sk.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     prime_nos()
+    pub_s = (3**x_s)%17
+    print('sending saads pub key securely to arslan cheeni...')
+    send(str(pub_s))
     print("we will be using alpha = 3 and g = 17 for the DH")
     pub_A = s.recv(1024)
-    print('public key of arslan is rcvd:',pub_A.decode('utf-8'))
+    print('public key(by DH) of arslan is rcvd:',pub_A.decode('utf-8'))
     j = int(test_make(pub_A.decode('utf-8')))
     print('Symmetric key for the session obtained using DH protocol:',dh(x_s,j,3,17))
 

@@ -33,6 +33,7 @@ def rsa(p, q):
     while ( e >= 0  &  e < phy ):
         if math.gcd(e,phy) == 1:
             pubk = e,n
+            print("RSA-Public Key is : ",pubk)
             break
         else:
             e = e + 1 
@@ -40,12 +41,9 @@ def rsa(p, q):
     while ( d >= 0  &  d < phy ) :
         if (d * e % phy) == 1 & (d != e):
             privk = d,n
+            print("RSA-Private Key is : ",privk)
             global x_a
-            x_a = d
-            pub_A = 3**d%17 
-            send(str(pub_A))
             x_a = d 
-            return x_a
             break 
         else:
             d = d + 1
@@ -82,7 +80,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     pub_s = conn.recv(1024)
     print('public key of saad is recvd: ',pub_s.decode('utf-8'))
     j = int(test_make(pub_s.decode('utf-8')))
-    print("we will be using alpha = 3 and g = 17 for the DH")
     prime_nos()
+    print("we will be using alpha = 3 and g = 17 for the DH")
+    print('sending the publickey(by DH) to the other end ......')
+    pub_A = 3**x_a%17
+    send(str(pub_A))
     print('Symmetric key for the session obtained using DH protocol:',dh(x_a,j,3,17))
 
