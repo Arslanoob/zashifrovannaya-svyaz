@@ -40,6 +40,7 @@ def rsa(p, q):
     while ( d >= 0  &  d < phy ) :
         if (d * e % phy) == 1 & (d != e):
             privk = d,n
+            global x_a
             x_a = d
             pub_A = 3**d%17 
             send(str(pub_A))
@@ -58,13 +59,15 @@ def dh(x_a,pub_s,a,g):
     k = (pub_s**x_a)%g
     return k
 
-def receive_key(x_a):
+def receive_key():
     data = conn.recv(1024)  
     print("\nMessage from A : " + data.decode('utf-8'))
-    dh(x_a,pub_s,3,17)
+    pub_s =data
+    return pub_s
 
-def test_make(cipher)-> int:
-    return cipher
+def test_make(pub_s)-> int:
+    bc = pub_s
+    return bc
     
 
 
@@ -80,5 +83,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print(pub_s.decode('utf-8'))
     j = int(test_make(pub_s.decode('utf-8')))
     print(type(j))
-    pub_s=test_make(pub_s.decode('utf-8'))
     prime_nos()
+    print(dh(x_a,j,3,17))
+
