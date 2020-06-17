@@ -80,9 +80,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     conn, addr = s.accept()
     print('Connected by', addr)
     pub_s = conn.recv(1024)
-    print(pub_s.decode('utf-8'))
+    print('public key of saad is recvd: ',pub_s.decode('utf-8'))
     j = int(test_make(pub_s.decode('utf-8')))
-    print(type(j))
+    print("we will be using alpha = 3 and g = 17 for the DH")
     prime_nos()
-    print(dh(x_a,j,3,17))
+    print('Symmetric key for the session obtained using DH protocol:',dh(x_a,j,3,17))
 

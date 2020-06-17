@@ -81,8 +81,9 @@ PORT = 1337  # The port used by the server
 with sk.socket(sk.AF_INET, sk.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     prime_nos()
+    print("we will be using alpha = 3 and g = 17 for the DH")
     pub_A = s.recv(1024)
-    print(pub_A.decode('utf-8'))
+    print('public key of arslan is rcvd:',pub_A.decode('utf-8'))
     j = int(test_make(pub_A.decode('utf-8')))
-    print(dh(x_s,j,3,17))
+    print('Symmetric key for the session obtained using DH protocol:',dh(x_s,j,3,17))
 
