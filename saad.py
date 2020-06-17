@@ -89,4 +89,11 @@ with sk.socket(sk.AF_INET, sk.SOCK_STREAM) as s:
     print('public key(by DH) of arslan is rcvd:',pub_A.decode('utf-8'))
     j = int(test_make(pub_A.decode('utf-8')))
     print('Symmetric key for the session obtained using DH protocol:',dh(x_s,j,3,17))
+    while True:
+        a= bytes(input("send message\n"),'utf-8')
+        s.sendall(a)
+        if not input():
+            break
+        bj=s.recv(1024)
+        print('message from arslan :',bj.decode('utf-8'))
 
